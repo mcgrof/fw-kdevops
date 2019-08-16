@@ -157,6 +157,12 @@ You would have these files in place as well:
 ~/.ansible/roles/mcgrof.bootlinux/templates/config-next-20220915
 ```
 
+Say you just want to reboot the hosts:
+
+```bash
+ansible-playbook -i hosts playbooks/bootlinux.yml --tags reboot
+```
+
 ### Public ansible role documentation
 
 The following public roles are used, and so have respective upstream
