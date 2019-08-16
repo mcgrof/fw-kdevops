@@ -1,12 +1,18 @@
 # fw-kdevops
 
 fw-kdevops is a fork of [kdevops](https://github.com/mcgrof/kdevops),
-simplified for *only* testing the Linux kernel firmware loader.
+simplified for *only* testing the
+[Linux kernel firmware API](https://www.kernel.org/doc/html/latest/driver-api/firmware/index.html).
 
 Only two target hosts are provisioned:
 
   * fw-stable: tracks the baseline
   * fw-dev: let's you test development patches
+
+# Upstream documentation
+
+Read the documentation about the
+[Linux kernel firmware API](https://www.kernel.org/doc/html/latest/driver-api/firmware/index.html).
 
 ## Firmware loader kconfig options
 
@@ -30,8 +36,13 @@ the `CONFIG_FW_LOADER`, so all the code under:
 drivers/base/firmware_loader/
 ```
 
-## Install dependencies
+The other options just conveniences to let our tests run smoother, and
+also lets us test all aspects of the firmware API with just *one*
+Linux kernel configuration. That is, regardless of what kernel
+configuration you may have, the above configuration is targetted
+at testing *all* possible code for the firmware API.
 
+## Install dependencies
 
 You should have installed ansible, vagrant and terraform (hopefully we'll have
 a local ansinle role to do this eventually). After that, all you have to do is:
@@ -143,7 +154,7 @@ You would have these files in place as well:
 
 ```bash
 ~/.ansible/roles/mcgrof.bootlinux/templates/fw-is-cool.patch
-~/.ansible/roles/mcgrof.bootlinux/templates/next-20220915
+~/.ansible/roles/mcgrof.bootlinux/templates/config-next-20220915
 ```
 
 ### Public ansible role documentation
