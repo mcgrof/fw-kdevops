@@ -27,3 +27,5 @@ target_linux_tree: "linux-next"
 
 selftests_script: "./tools/testing/selftests/firmware/fw_run_tests.sh"
 selftests_linux_dir: "/data/linux-next/"
+
+enable_dhcp_hack: true
