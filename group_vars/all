@@ -21,7 +21,7 @@ make: "make"
 make_num_jobs: "$(nproc --all)"
 
 target_linux_git: "git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git"
-target_linux_version: "next-20190729"
+target_linux_version: "next-20190816"
 target_linux_tag: "{{ target_linux_version }}"
 target_linux_tree: "linux-next"
 
