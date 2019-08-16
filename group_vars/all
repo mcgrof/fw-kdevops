@@ -1,0 +1,29 @@
+---
+# These are general global variables shared between all roles.
+# You can override these on the file:
+# ansible/extra_vars.yml
+
+# Your default username to log in to systems
+data_user: vagrant
+data_group: vagrant
+
+data_home_dir: "/home/{{ data_user }}"
+
+# Where we put git trees
+data_device: "/dev/nvme0n1"
+data_path: "/data"
+data_fstype: "xfs"
+data_label: "data"
+data_fs_opts: "-L {{ data_label }}"
+
+# Full path to make command if you want to override
+make: "make"
+make_num_jobs: "$(nproc --all)"
+
+target_linux_git: "git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git"
+target_linux_version: "next-20190729"
+target_linux_tag: "{{ target_linux_version }}"
+target_linux_tree: "linux-next"
+
+selftests_script: "./tools/testing/selftests/firmware/fw_run_tests.sh"
+selftests_linux_dir: "/data/linux-next/"

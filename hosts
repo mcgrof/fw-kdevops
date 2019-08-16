@@ -1,0 +1,7 @@
+[all]
+fw-stable
+fw-dev
+[baseline]
+fw-stable
+[dev]
+fw-dev
