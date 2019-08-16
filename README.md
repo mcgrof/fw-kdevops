@@ -1,145 +1,76 @@
-# kdevops
+# fw-kdevops
 
-kdevops is a sample framework which lets you easily get your Linux devops
-environment going for whatever use case you have. The first use case is to
-provide a devops environment for Linux kernel development testing, and hence
-the name. The goal behind this project is to let you *easily fork it* and
-re-purpose it for whatever kdevops needs you may have.
+fw-kdevops is a fork of [kdevops](https://github.com/mcgrof/kdevops),
+simplified for *only* testing the Linux kernel firmware loader.
 
-kdevops relies on vagrant, terraform and ansible to get you going with whatever
-your virtualization / bare metal / cloud provisioning environment easily.
-It realies heavily on public ansible galaxy roles. This lets us share code
-with the community work and allows us to not have to carry all that code
-in this project. Each role focuses on one specific small goal of the
-development focus of kdevops. kdevops then is a bare bones sample demo
-project of the kdevops ansible roles made available to the community.
+Only two target hosts are provisioned:
 
-There are three parts to the long terms ideals for kdevops:
+  * fw-stable: tracks the baseline
+  * fw-dev: let's you test development patches
 
-1. Provisioning required virtual hosts / cloud environment
-2. Provisioning your requirements
-3. Running whatever you want
+## Firmware loader kconfig options
 
-Ansible is first used to get all the required ansible roles.
-
-Vagrant or terraform can then be used to provision hosts. Vagrant and terraform
-are also used to kick off ansible later for the second part of the
-provisioning, to get all requirements installed.
-
-What works?
-
-  * Full vagrant provisioning
-  * Initial terraform provisioning on different cloud providers
-  * Running ansible to install dependencies on debian
-  * Using ansible to clone, compile and boot into to any random kernel git tree
-    with a supplied config
-  * Updating your ~/ssh/config for terraform, first tested with the
-    OpenStack provider, with both generic and special minicloud support. Other
-    terraform providers just require making use of the newly published
-    [terraform module add-host-ssh-config](https://registry.terraform.io/modules/mcgrof/add-host-ssh-config/)
-
-# Install dependencies
-
-Just run:
+We test the firmware loader through the Linux kernel's selftests framework,
+and selftests lets you declare which kernel configurations are required to
+test a target subsystem. These are the respective kernel configuration options
+we enable on our test hosts:
 
 ```
-make deps
+CONFIG_TEST_FIRMWARE=y
+CONFIG_FW_LOADER=y
+CONFIG_FW_LOADER_USER_HELPER=y
+CONFIG_IKCONFIG=y
+CONFIG_IKCONFIG_PROC=y
 ```
 
-kdevops relies on a series of ansible roles to allow us to share as much code
-as possible with other projects. Next decide if you want to use a series of
-already provisioned hosts, provision your own localized VMs, or use a cloud
-provider. If you already have your hosts provisioned then skip to the ansible
-section. If you need to provision local VMs read the vagrant section below.
-If you want to use a cloud provider read the terraform docs below.
+The code in question we test inside the Linux kernel is what implements
+the `CONFIG_FW_LOADER`, so all the code under:
 
-In the end you will rely on ansible after all hosts are provisioned.
+``` 
+drivers/base/firmware_loader/
+```
 
-## Vagrant support - localized VMs
+## Install dependencies
 
-Read the [kdevops_vagrant](https://github.com/mcgrof/kdevops_vagrant)
-documentation, then come here and read this.
 
-Vagrant is used to easily deploy non-cloud virtual machines. Below are
-the list of providers supported:
-
-  * Virtualbox
-  * libvirt (KVM)
-
-The following Operating Systems are supported:
-
-  * OS X
-  * Linux
-
-### Running libvirt as a regular user
-
-kdevops can be used without requiring root privileges. To do this you must
-ensure the user which runs vagrant is part of the following groups:
-
-  * kvm
-  * libvirt
-  * qemu on Fedora / libvirt-qemu on Debian
-
-Debian uses libvirt-qemu as the userid which runs qemu, Fedora uses qemu.
-The qcow2 files created are ensured to allow the default user qemu executes
-under by letting the qemu user group to write to them as well. We have the
-defaults for debian on this project, to override the default group to use for
-qemu set the value need on the environment variable:
-
-  * KDEVOPS_VAGRANT_QEMU_GROUP
-
-You can override the default user qemu will run by modifying
-`/etc/libvirt/qemu.conf' user and group settings there. If on a system with
-apparmor or selinux enabled, there may be more work required on your part.
-
-### Node configuration
-
-You configure your node target deployment on the node.yaml file by default,
-you however can override what file to use with the environment variables:
-
-  * KDEVOPS_VAGRANT_NODE_CONFIG
-
-### Provisioning with vagrant
-
-If on Linux we'll assume you are using KVM. If on OS X we'll assume you are
-using Virtualbox. If these assumptions are incorrect you can override on the
-configuration file for your node provisioning. For instance, the demo you'd
-use vagrant/nodes.yaml and set the force_provider variable to either "libvirt"
-or "kvm". However, since you would typically keep your vagrant/nodes.yaml file
-in version control you can instead use an environment variable:
-
-  * KDEVOPS_VAGRANT_PROVIDER
-
-You are responsible for having a pretty recent system with some fresh
-libvirt, or vitualbox installed. For instance, a virtualbox which supports
-nvme.
+You should have installed ansible, vagrant and terraform (hopefully we'll have
+a local ansinle role to do this eventually). After that, all you have to do is:
 
 ```bash
 make deps
+```
+
+Be sure to read the recommendations on the
+[kdevops](https://github.com/mcgrof/kdevops) about how to let your
+regular user be able to run qemu. Eventually this should be as easy
+as optionally running a local ansible role, but for now this requires
+a bit of manual effort.
+
+## Provisioning hosts with vagrant
+
+```bash
 cd vagrant/
 vagrant up
 ```
 
-Say you want to just test the provisioning mechanism:
+## Destroying provisioned nodes with vagrant
+
+You can either destroy directly with vagrant:
 
 ```bash
-vagrant provision
+cd vagrant/
+vagrant destroy -f
+# This last step is optional
+rm -rf .vagrant
 ```
-### Limitting vagrant's number of boxes
 
-By default the using vagrant will try to create *all* the nodes specified on
-your configuration file. By default this is nodes.yml and there are currently 7
-nodes there. If you are going to just test this framework you can limit this
-initially using environment variables:
+Or you can just use virsh directly, if using KVM:
 
 ```bash
-export KDEVOPS_VAGRANT_LIMIT_BOXES="yes"
-export KDEVOPS_VAGRANT_LIMIT_NUM_BOXES=1
+sudo virsh list --all
+sudo virsh destroy name-of-guest
+sudo virsh undefine name-of-guest
 ```
-
-This will ensure only the first host, for example, would be created and
-provisioned. This might be useful if you are developing on a laptop, for
-example, and you want to limit the amount of resources used.
 
 ## Terraform support
 
@@ -152,8 +83,6 @@ the list of clouds currently supported:
   * azure
   * openstack (special minicloud support added)
   * aws
-
-More details are available on the file [terraform/README.md](./terraform/README.md) file
 
 ### Provisioning with terraform
 
@@ -185,22 +114,37 @@ for this by different cloud providers we support:
 
 ## Running ansible
 
-Before running ansible make sure you can ssh into the hosts listed on ansible/hosts.
+Before running ansible make sure you can ssh into the hosts listed on
+ansible/hosts. So try:
+
 
 ```bash
-make ansible_deps
-ansible-playbook -i hosts -l dev playbooks/bootlinux.yml
+ssh fw-dev
+ssh fw-stable
 ```
 
-Yes you can later add use a different tag for the kernel revision from the
-command line, and even add an extra patch to test on top a kernel:
+Next to run ansible to install and reboot into the latest linux version this
+project tracks:
 
-```
-ansible-playbook -i hosts -l dev --extra-vars "target_linux_version=4.19.21 target_linux_extra_patch=try-v4.19.20-fixes-20190716-v1.patch" bootlinux.yml
+```bash
+ansible-playbook -i hosts playbooks/bootlinux.yml
 ```
 
-You would place the `pend-v4.19.58-fixes-20190716-v2.patch` file into the
-`~/.ansible/roles/mcgrof.bootlinux/templates/` directory.
+You can use a different tag for the kernel revision from the command line, and
+even add an extra patch to test on top a kernel. Say we're in the future on
+September 15, 2022 and you want to test that day's version of linux-next with
+your hacks implemented on fw-is-cool.patch. You can use:
+
+```bash
+ansible-playbook -i hosts -l dev --extra-vars "target_linux_version=next-20220915 target_linux_extra_patch=fw-is-cool.patch" bootlinux.yml
+```
+
+You would have these files in place as well:
+
+```bash
+~/.ansible/roles/mcgrof.bootlinux/templates/fw-is-cool.patch
+~/.ansible/roles/mcgrof.bootlinux/templates/next-20220915
+```
 
 ### Public ansible role documentation
 
