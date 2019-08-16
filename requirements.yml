@@ -27,7 +27,7 @@
 
 - src: mcgrof.selftests
   name: mcgrof.selftests
-  version: v0.0.3
+  version: v0.0.4
 
 - src: mcgrof.fix_dhcp_hack
   name: mcgrof.fix_dhcp_hack
