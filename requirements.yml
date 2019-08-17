@@ -23,11 +23,11 @@
 
 - src: mcgrof.bootlinux
   name: mcgrof.bootlinux
-  version: v1.3.1
+  version: v1.3.2
 
 - src: mcgrof.selftests
   name: mcgrof.selftests
-  version: v0.0.4
+  version: v0.0.6
 
 - src: mcgrof.fix_dhcp_hack
   name: mcgrof.fix_dhcp_hack

@@ -133,6 +133,7 @@ ansible/hosts. So try:
 ssh fw-dev
 ssh fw-stable
 ```
+### Using ansible to install the latest linux-next target
 
 Next to run ansible to install and reboot into the latest linux version this
 project tracks:
@@ -141,9 +142,28 @@ project tracks:
 ansible-playbook -i hosts playbooks/bootlinux.yml
 ```
 
+### Using ansible to run selftests for the firmware API
+
+
+```bash
+ansible-playbook -i hosts playbooks/selftests.yml
+```
+
+This is what you are expected to see provided no regressions were found:
+
+![Demo of results](images/demo-0001.png)
+
+### Debugging failures
+
+The selftest ansible role does not provide actual output, it just tells you if
+a failure was found. If a failure was found its time then to ssh into the
+respective host and run the self test on your own to debug things manually.
+
+### Testing a set of patches against the firmware API
+
 You can use a different tag for the kernel revision from the command line, and
-even add an extra patch to test on top a kernel. Say we're in the future on
-September 15, 2022 and you want to test that day's version of linux-next with
+even add an extra patch to test on top a kernel. Say we're in the future, on
+September 15, 2022, and you want to test that day's version of linux-next with
 your hacks implemented on fw-is-cool.patch. You can use:
 
 ```bash
@@ -156,6 +176,8 @@ You would have these files in place as well:
 ~/.ansible/roles/mcgrof.bootlinux/templates/fw-is-cool.patch
 ~/.ansible/roles/mcgrof.bootlinux/templates/config-next-20220915
 ```
+
+### To reboot hosts
 
 Say you just want to reboot the hosts:
 
