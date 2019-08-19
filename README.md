@@ -167,7 +167,7 @@ September 15, 2022, and you want to test that day's version of linux-next with
 your hacks implemented on fw-is-cool.patch. You can use:
 
 ```bash
-ansible-playbook -i hosts -l dev --extra-vars "target_linux_version=next-20220915 target_linux_extra_patch=fw-is-cool.patch" bootlinux.yml
+ansible-playbook -i hosts -l dev --extra-vars "target_linux_version=next-20220915 target_linux_extra_patch=fw-is-cool.patch" playbooks/bootlinux.yml
 ```
 
 You would have these files in place as well:
