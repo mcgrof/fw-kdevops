@@ -3,7 +3,7 @@
 
 - src: mcgrof.install_terraform
   name: mcgrof.install_terraform
-  version: v0.0.1
+  version: v0.0.2
 
 - src: mcgrof.install_vagrant
   name: mcgrof.install_vagrant
