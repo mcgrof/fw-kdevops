@@ -3,7 +3,7 @@
 
 - src: mcgrof.install_terraform
   name: mcgrof.install_terraform
-  version: v0.0.2
+  version: v0.0.3
 
 - src: mcgrof.install_vagrant
   name: mcgrof.install_vagrant
@@ -15,7 +15,7 @@
 
 - src: mcgrof.kdevops_vagrant
   name: mcgrof.kdevops_vagrant
-  version: v1.0.1
+  version: v1.0.4
 
 - src: mcgrof.kdevops_terraform
   name: mcgrof.kdevops_terraform
