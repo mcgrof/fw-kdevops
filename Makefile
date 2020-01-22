@@ -3,12 +3,15 @@
 all: deps
 
 terraform-deps:
+	@ansible-playbook -i hosts playbooks/install_terraform.yml
 	@ansible-playbook -i hosts playbooks/kdevops_terraform.yml 
 	@if [ -d terraform ]; then \
 		make -C terraform deps; \
 	fi
 
 vagrant-deps:
+	@ansible-playbook -i hosts playbooks/install_vagrant.yml
+	@ansible-playbook -i hosts playbooks/libvirt_user.yml
 	@ansible-playbook -i hosts playbooks/kdevops_vagrant.yml
 
 ansible_deps:

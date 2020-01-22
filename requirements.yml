@@ -1,6 +1,18 @@
 # http://docs.ansible.com/galaxy.html#installing-multiple-roles-from-a-file
 # The skinny: ansible-galaxy install -r requirements.yml
 
+- src: mcgrof.install_terraform
+  name: mcgrof.install_terraform
+  version: v0.0.1
+
+- src: mcgrof.install_vagrant
+  name: mcgrof.install_vagrant
+  version: v0.1.2
+
+- src: mcgrof.libvirt_user
+  name: mcgrof.libvirt_user
+  version: v0.0.5
+
 - src: mcgrof.kdevops_vagrant
   name: mcgrof.kdevops_vagrant
   version: v1.0.1
