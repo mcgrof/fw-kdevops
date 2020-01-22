@@ -11,7 +11,7 @@
 
 - src: mcgrof.libvirt_user
   name: mcgrof.libvirt_user
-  version: v0.0.5
+  version: v0.0.6
 
 - src: mcgrof.kdevops_vagrant
   name: mcgrof.kdevops_vagrant
