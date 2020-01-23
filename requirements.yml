@@ -15,7 +15,7 @@
 
 - src: mcgrof.kdevops_vagrant
   name: mcgrof.kdevops_vagrant
-  version: v1.0.4
+  version: v1.0.5
 
 - src: mcgrof.kdevops_terraform
   name: mcgrof.kdevops_terraform
