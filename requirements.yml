@@ -7,7 +7,7 @@
 
 - src: mcgrof.install_vagrant
   name: mcgrof.install_vagrant
-  version: v0.1.4
+  version: v0.1.5
 
 - src: mcgrof.libvirt_user
   name: mcgrof.libvirt_user
