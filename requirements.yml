@@ -43,4 +43,4 @@
 
 - src: mcgrof.fix_dhcp_hack
   name: mcgrof.fix_dhcp_hack
-  version: v0.0.5
+  version: v0.0.8
