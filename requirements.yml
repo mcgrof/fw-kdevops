@@ -7,7 +7,11 @@
 
 - src: mcgrof.install_vagrant
   name: mcgrof.install_vagrant
-  version: v0.2.5
+  version: v0.2.6
+
+- src: mcgrof.install_vagrant_boxes
+  name: mcgrof.install_vagrant_boxes
+  version: v0.0.8
 
 - src: mcgrof.libvirt_user
   name: mcgrof.libvirt_user
