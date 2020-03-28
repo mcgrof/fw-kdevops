@@ -51,10 +51,6 @@ vagrant_global:
       size: 102400
     scratch:
       size: 102400
-    extra1:
-      size: 102400
-    extra2:
-      size: 102400
 
 # Note: vagrant is not a fan of hosts with underscores.
 #
