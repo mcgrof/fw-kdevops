@@ -14,10 +14,13 @@ vagrant-deps:
 	@ansible-playbook -i hosts playbooks/libvirt_user.yml
 	@ansible-playbook -i hosts playbooks/kdevops_vagrant.yml
 
+verify-vagrant-user:
+	@ansible-playbook -i hosts playbooks/libvirt_user.yml -e "only_verify_user=True"
+
 ansible_deps:
 	@ansible-galaxy install --force -r requirements.yml
 
-deps: ansible_deps terraform-deps vagrant-deps
+deps: ansible_deps terraform-deps vagrant-deps verify-vagrant-user
 	@echo Installed dependencies
 
 terraform-clean:
