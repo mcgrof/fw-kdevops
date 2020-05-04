@@ -3,23 +3,19 @@
 
 - src: mcgrof.install_terraform
   name: mcgrof.install_terraform
-  version: v0.0.3
+  version: v0.0.4
 
 - src: mcgrof.install_vagrant
   name: mcgrof.install_vagrant
-  version: v0.2.6
-
-- src: mcgrof.install_vagrant_boxes
-  name: mcgrof.install_vagrant_boxes
-  version: v0.0.8
+  version: v0.2.7
 
 - src: mcgrof.libvirt_user
   name: mcgrof.libvirt_user
-  version: v0.0.6
+  version: v0.0.10
 
 - src: mcgrof.kdevops_vagrant
   name: mcgrof.kdevops_vagrant
-  version: v1.0.5
+  version: v1.1.1
 
 - src: mcgrof.kdevops_terraform
   name: mcgrof.kdevops_terraform
@@ -35,7 +31,7 @@
 
 - src: mcgrof.devconfig
   name: mcgrof.devconfig
-  version: v1.1.6
+  version: v1.2.1
 
 - src: mcgrof.bootlinux
   name: mcgrof.bootlinux
