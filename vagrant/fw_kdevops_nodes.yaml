@@ -32,11 +32,6 @@ vagrant_global:
     # selinux you may run into snags, but that is out of scope of this project.
     qemu_group_auto: true
     qemu_group: 'libvirt-qemu'
-    # If enabled the above qemu_group will be inferred by default from
-    # certain heuristics on the Vagrantfile. This is enabled by default.
-    # To override you can use the environment variable: ${PN}_VAGRANT_QEMU_GROUP
-    # where PN is the project name in upper case.
-    qemu_group_auto: true
     # In case you use a development version of qemu
     # emulator_path: '/usr/local/bin/qemu-system-x86_64'
     emulator_path: '/usr/bin/qemu-system-x86_64'
