@@ -1,32 +1,20 @@
-.PHONY: all deps ansible_deps vagrant-deps clean
+KDEVOPS_PLAYBOOKS_DIR :=	playbooks
+KDEVOPS_HOSTFILE :=		hosts
 
-all: deps
+-include Makefile.kdevops
 
-terraform-deps:
-	@ansible-playbook -i hosts playbooks/install_terraform.yml
-	@ansible-playbook -i hosts playbooks/kdevops_terraform.yml 
-	@if [ -d terraform ]; then \
-		make -C terraform deps; \
-	fi
+# disable built-in rules for this file
+.SUFFIXES:
 
-vagrant-deps:
-	@ansible-playbook -i hosts playbooks/install_vagrant.yml
-	@ansible-playbook -i hosts playbooks/libvirt_user.yml
-	@ansible-playbook -i hosts playbooks/kdevops_vagrant.yml
+.DEFAULT: deps
 
-verify-vagrant-user:
-	@ansible-playbook -i hosts playbooks/libvirt_user.yml -e "only_verify_user=True"
+deps: kdevops_install
+	$(MAKE) -f Makefile.kdevops kdevops_deps
+PHONY := deps
 
-ansible_deps:
+kdevops_install:
 	@ansible-galaxy install --force -r requirements.yml
+	@ansible-playbook -i $(KDEVOPS_HOSTFILE) $(KDEVOPS_PLAYBOOKS_DIR)/kdevops_install.yml
+PHONY += kdevops_install
 
-deps: ansible_deps terraform-deps vagrant-deps verify-vagrant-user
-	@echo Installed dependencies
-
-terraform-clean:
-	@if [ -d terraform ]; then \
-		make -C terraform clean ; \
-	fi
-
-clean: terraform-clean
-	@echo Cleaned up
+.PHONY: $(PHONY)
