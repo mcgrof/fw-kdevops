@@ -16,6 +16,7 @@ terraform/azure/
 terraform/globals.mk
 terraform/openstack/
 terraform/shared.tf
+terraform/gce/
 
 playbooks/bootlinux.yml
 playbooks/devconfig.yml
