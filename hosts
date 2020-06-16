@@ -1,7 +1,15 @@
 [all]
 fw-stable
 fw-dev
+[all:vars]
+ansible_python_interpreter =  "/usr/bin/python3"
+
 [baseline]
 fw-stable
+[baseline:vars]
+ansible_python_interpreter =  "/usr/bin/python3"
+
 [dev]
 fw-dev
+[dev:vars]
+ansible_python_interpreter =  "/usr/bin/python3"
