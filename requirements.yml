@@ -3,9 +3,9 @@
 
 - src: mcgrof.kdevops_install
   name: mcgrof.kdevops_install
-  version: v1.9.8
+  version: v2.0.1
 
 - src: mcgrof.selftests
   name: mcgrof.selftests
-  version: v0.0.6
+  version: v1.0.0
 
